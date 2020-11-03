@@ -1,80 +1,80 @@
-BUCEANDO EN EL OCEANO
+# SHARKS AT THE SEA
+
 El objetivo del juego es conseguir que el submarinista permanezca el máximo tiempo posible en el agua sin ser devorado por los tiburones. 
 
-MVP (DOM - CANVAS)
+### MVP (DOM - CANVAS)
 El submarinista tiene que moverse sobre el eje de las Y para esquivar a los tiburones. Los tiburones van apareciendo de forma aleatoria y su frecuencia se ve incrementada con el paso del tiempo. 
 
-DATA STRUCTURE
+### DATA STRUCTURE
 1. index.html
 2. main.js
 3. game.js
 4. player.js
 5. obstacle.js
 
-1. index.html
+#### 1. index.html
 Pantalla Inicio, instrucciones del juego y botón Play Game. 
 
-2. Class Main
+#### 2. Class Main
 Lógica del juego. 
 
-3. Class Game
+#### 3. Class Game
 Classe Game para dibujar el canvas con background image. 
-Propiedades: 
-canvas
-ctx
-time
-score
+- Propiedades: 
+    - Canvas
+    - Ctx
+    - Diver
+    - Shark
+    - Time
+    - Score
+- Metodos:
+    - Start
+    - Draw
+    - ClearCanvas
+    - StartLoop
+    - CheckCollision
+    - CheckTime
+    - CountScore 
+    - GameOver
 
-Metodos:
-start
-draw
-clearCanvas
-startLoop
-checkCollision
-checkTime
-countScore
-gameOver
+#### 4. Class Player
+- Propiedades: 
+    - Canvas
+    - Ctx
+    - Width
+    - Height
+    - x
+    - y
+    - Direction
+    - Speed
+- Métodos: 
+    - Draw
+    - Move
 
-4. Class Player
-Propiedades: 
-canvas
-ctx
-width
-height
-x
-y
-direction
-speed
+#### 5. Class Shark
+- Propiedades: 
+    - Canvas
+    - Ctx
+    - Size
+    - x
+    - y
+    - Speed
+- Metodos: 
+    - Draw
+    - Move
 
-Métodos: 
-draw
-move
-
-5. Class Shark
-Propiedades: 
-canvas
-ctx
-size
-x
-y
-speed
-
-Metodos: 
-draw
-move
-
-STATES AND TRANSITIONS
-START GAME
+### STATES AND TRANSITIONS
+#### START GAME
 Pantalla inicial. 
 Botón Play Game
-GAME 
+#### GAME 
 Desarrollo del juego
 Fin del juego cuando jugador choca con tiburón
-GAME OVER
+#### GAME OVER
 Your Score
 Play Again
 
-BONUS
+### BONUS
 Player que se mueva en el eje de las X
 Movimiento del player el función del evento mouse
 Aparición de objetos que dan más puntos (peces, tesoros, etc) 
