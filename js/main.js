@@ -24,7 +24,14 @@ const main = () => {
             </header>
         `)
         const startButton = document.querySelector('button');
-        startButton.addEventListener('click' , buildGameScreen)
+        startButton.addEventListener('click', buildGameScreen)
+        //Añadido evento para iniciar juego presionando cualquier tecla 'Enter' o 'q'
+        const body = document.querySelector('body')
+        body.addEventListener("keydown", event => {
+            if (event.key === 'Enter' || event.key === 'q') {
+                buildGameScreen()
+            }
+        });
     }
 
     //DESCOMENTAR PARA PROBAR
@@ -40,8 +47,6 @@ const main = () => {
     // console.log(body)
     // };
     //FIN DESCOMENTAR PARA
-
-
 
     const buildGameScreen = () => { 
         builDom(`
@@ -59,22 +64,53 @@ const main = () => {
         canvasElement.setAttribute("height", height);
 
         const game = new Game(canvasElement)
+        game.gameOverCallback(buildGameOver);
 
+        //game.score()
         game.startLoop();
 
-            
+        //Events to move the diver
         const moveDiver = (e) => {
             const userKey = e.key
-            if (e.key === 'ArrowUp'|| e.keycode === 38 || userKey === "a") {
-               game.diver.setDirection(-5)
-            } else if (e.key === 'Arrowdown') {
-                game.diver.setDirection(5)
+            if (userKey === 'ArrowUp' || userKey === 'a') {
+                game.diver.setDirection(-1)
+            } else if (userKey === 'ArrowDown' || userKey === 'f') {
+                game.diver.setDirection(1)
             }
         };
         document.addEventListener('keydown', moveDiver);
+        const stopDiver = (e) => {
+            const userKey = e.key
+            if (userKey === 'ArrowUp' || userKey === 'a') {
+                game.diver.setDirection(0)
+            } else if (userKey === 'ArrowDown' || userKey === 'f') {
+                game.diver.setDirection(0)
+            }
+        };
+        document.addEventListener('keyup', stopDiver);
 
-    }
+    };
 
+    const buildGameOver = () => { //returns undefined this.points
+        builDom(`
+            <section class="game-over">
+                <h1>Game Over</h1>
+                <h3>Your Score is ${this.points}</h3> 
+                <h4>Best restults</h4>
+                <ol>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li></li>
+                <ol>
+                <button>Play Again</button>
+            </section>
+            `);
+    
+        const restartButton = document.querySelector("button");
+        restartButton.addEventListener("click", buildGameScreen);
+    };
     
     buildSplashScreen();
 }

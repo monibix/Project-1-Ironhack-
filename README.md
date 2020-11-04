@@ -76,8 +76,11 @@ Play Again
 
 ### BONUS
 Player que se mueva en el eje de las X.
-Movimiento del player el función del evento mouse.
+Movimiento del player en función del evento mouse.
 Aparición de objetos que dan más puntos (peces, tesoros, etc).
 Control del oxigeno del jugador-submarinista.
 Aparición de objetos fijos: botella de oxigeno.
 Introducción de nombre-jugador y historial de mejores puntuaciones.
+
+### LINKS
+[Trello](https://trello.com/b/icQrrRMk/ironhack-project-1)
