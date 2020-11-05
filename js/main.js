@@ -7,7 +7,7 @@ const main = () => {
         main.innerHTML = html;
     }
 
-    const buildSplashScreen = () => {
+    const buildSplashScreen = () => { 
         builDom(`
             <header class="container">
             <h1>SHARKS</h1>
@@ -73,25 +73,33 @@ const main = () => {
         const moveDiver = (e) => {
             const userKey = e.key
             if (userKey === 'ArrowUp' || userKey === 'a') {
-                game.diver.setDirection(-1)
+                game.diver.setDirectionY(-1)
             } else if (userKey === 'ArrowDown' || userKey === 'f') {
-                game.diver.setDirection(1)
+                game.diver.setDirectionY(1)
+            } else if (userKey === 'ArrowRight' || userKey === 'd') {
+                game.diver.setDirectionX(1)
+            } else if (userKey === 'ArrowLeft' || userKey === 's') {
+                game.diver.setDirectionX(-1)
             }
         };
         document.addEventListener('keydown', moveDiver);
         const stopDiver = (e) => {
             const userKey = e.key
             if (userKey === 'ArrowUp' || userKey === 'a') {
-                game.diver.setDirection(0)
+                game.diver.setDirectionY(0)
             } else if (userKey === 'ArrowDown' || userKey === 'f') {
-                game.diver.setDirection(0)
+                game.diver.setDirectionY(0)
+            } else if (userKey === 'ArrowRight' || userKey === 'd') {
+                game.diver.setDirectionX(0)
+            } else if (userKey === 'ArrowLeft' || userKey === 's') {
+                game.diver.setDirectionX(0)
             }
         };
         document.addEventListener('keyup', stopDiver);
 
     };
 
-    const buildGameOver = () => { //returns undefined this.points
+    const buildGameOver = () => { //returns undefined this.game.points
         builDom(`
             <section class="game-over">
                 <h1>Game Over</h1>

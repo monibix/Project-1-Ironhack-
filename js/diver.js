@@ -10,24 +10,32 @@ class Diver {
         this.size = 80;
         this.x = 10 + this.size / 2;; 
         this.y = this.canvas.height / 2; 
-        this.direction = 0;
+        this.directionY = 0;
+        this.directionX = 0;
         this.speed = 5 ; 
         this.lives = lives;
     }
     
     draw() {
         let imgDiver = new Image()
-        imgDiver.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/diver2.jpg' 
+        imgDiver.src = './images/diver2.jpg' 
         this.ctx.drawImage(imgDiver, this.x, this.y, this.size, this.size)
     }
 
-    update() {
-        this.y = this.y + this.direction * this.speed;
-        console.log(this.direction)
+    updateY() {
+        this.y = this.y + this.directionY * this.speed;
     }
 
-    setDirection(direction) {
-        this.direction = direction;
+    updateX() {
+        this.x = this.x + this.directionX * this.speed;
+    }
+
+    setDirectionY(directionY) { 
+        this.directionY = directionY;
+    }
+
+    setDirectionX(directionX) {
+        this.directionX = directionX;
     }
 
     checkScreen() {
@@ -52,8 +60,24 @@ class Diver {
         return false; 
     }
 
+    checkCollisionsTreasure(treasure) {
+        const collideRight = this.x + this.size / 2 > treasure.x - treasure.size / 2;
+        const collideLeft = this.x - this.size / 2 < treasure.x + treasure.size / 2;
+        const collideTop = this.y + this.size / 2 > treasure.y - treasure.size / 2;
+        const collideBottom = this.y - this.size / 2 < treasure.y + treasure.size / 2;
+    
+        if (collideRight && collideLeft && collideTop && collideBottom) {
+            return true;
+        }  
+        return false; 
+    }
+
     loseLive() { 
         this.lives--;
+    }
+
+    winLive() { 
+        this.lives++;
     }
 
 }
