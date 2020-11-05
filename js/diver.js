@@ -60,18 +60,6 @@ class Diver {
         return false; 
     }
 
-    checkCollisionsTreasure(treasure) {
-        const collideRight = this.x + this.size / 2 > treasure.x - treasure.size / 2;
-        const collideLeft = this.x - this.size / 2 < treasure.x + treasure.size / 2;
-        const collideTop = this.y + this.size / 2 > treasure.y - treasure.size / 2;
-        const collideBottom = this.y - this.size / 2 < treasure.y + treasure.size / 2;
-    
-        if (collideRight && collideLeft && collideTop && collideBottom) {
-            return true;
-        }  
-        return false; 
-    }
-
     loseLive() { 
         this.lives--;
     }
@@ -79,6 +67,7 @@ class Diver {
     winLive() { 
         this.lives++;
     }
+
 
 }
 

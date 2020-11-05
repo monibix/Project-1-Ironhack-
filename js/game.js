@@ -8,11 +8,21 @@ class Game {
         this.diver; 
         this.sharks = [];
         this.treasure = [];
-        this.points = 0
+        this.fish = [];
+        this.points = setInterval(() => {
+            this.points += 1
+        }, 100);
+        this.air = [];
+        this.remainingAir = 60
+        this.tiempo = setInterval(() => {
+            this.remainingAir -= 1
+        }, 1000);
         this.isGameOver = false;
+        console.log(this.points)
     }
 
     updateCanvas() {
+        this.checkRemainingAir()
         this.diver.updateY()
         this.diver.updateX()
         this.sharks.forEach((shark) => {
@@ -20,6 +30,12 @@ class Game {
         })
         this.treasure.forEach((tre) => {
             tre.update()
+        })
+        this.fish.forEach((fi) => {
+            fi.update()
+        })
+        this.air.forEach((a) => {
+            a.update()
         })
     }
 
@@ -29,23 +45,32 @@ class Game {
 
     drawCanvas() {
         this.drawBackground()
+        this.drawLives()
+        this.drawRemainingAir()
         this.diver.draw()
         this.sharks.forEach((shark) => {
             shark.draw();
         })
+        this.drawLives()
         this.drawScore()
         this.drawLives()
         this.treasure.forEach((tre) => {
             tre.draw();
         })
+        this.fish.forEach((fi) => {
+            fi.draw();
+        })
+        this.air.forEach((a) => {
+            a.draw();
+        })
     }
 
     drawScore() {
-        this.points = parseInt(this.points + 1.2 ) 
-        setInterval(() => (this.points), 1000)
-        this.ctx.font = "18px serif"
+        // this.points = parseInt(this.points+=1) 
+        // setInterval(() => {((this.points), 3000)});
+        this.ctx.font = "bold 18px arial"
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText(`Score: ${this.points}`, 900, 30)
+        this.ctx.fillText(`Score: ${this.points}`, this.canvas.width - 250, 40)
     }
 
     drawBackground() {
@@ -56,15 +81,37 @@ class Game {
 
     drawLives(){
         let imgLives = new Image() 
-        imgLives.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/lives.png'
-        this.ctx.drawImage(imgLives, 1000, 10, 30, 30)
-        this.ctx.font = "18px arial"
+        imgLives.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/cor.png'
+        this.ctx.drawImage(imgLives, this.canvas.width - 100, 25, 20, 20)
+        this.ctx.font = "bold 18px arial"
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText(`${this.diver.lives}`, 1030, 30) 
+        this.ctx.fillText(`${this.diver.lives}`, this.canvas.width - 70, 40) 
     }
 
-    stopGame() {
-        this.sharks.speed = 0; 
+    drawRemainingAir() {
+        //this.remainingAir = parseInt(this.remainingAir - 1) 
+        //setInterval(() => (this.remainingAir), 1000)
+        this.ctx.font = "bold 18px arial"
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillText(`Air: ${this.remainingAir}`, this.canvas.width - 350, 40)
+    }
+
+    winRemainingAir() {
+        this.remainingAir += 30
+    }
+
+    checkRemainingAir() {
+        if (this.remainingAir === 0) {
+            this.isGameOver = true;
+        }
+    }
+
+    // stopGame() {
+    //     this.sharks.speed = 0; //Este creo que puede ir fuera
+    // }
+
+    winScore(num) {
+        this.points += num
     }
 
     gameOverCallback(callback) {
@@ -73,27 +120,41 @@ class Game {
 
     checkAllCollisions() {
         this.diver.checkScreen();
-        this.stopGame();
+        //this.stopGame();
+        //SHARKS
         this.sharks.forEach((shark, index) => {
             if (this.diver.checkCollisions(shark)) {
             this.diver.loseLive();
             this.sharks.splice(index, 1);
-            this.stopGame() 
+            //this.stopGame() //esto creo que puede ir fuera
                 if (this.diver.lives === 0) {
                     this.isGameOver = true;
                     this.onGameOver();
                 }
             }
         });
+        //TREASURE
         this.treasure.forEach((treasure, index) => {
             if (this.diver.checkCollisions(treasure)) {
             this.diver.winLive();
             this.treasure.splice(index, 1);
-            console.log(this.treasure)
-
-                if (this.diver.lives === 0) {
+            }
+        });
+        //FISHES
+        this.fish.forEach((fi, index) => {
+            if (this.diver.checkCollisions(fi)) {
+            this.winScore(100)
+            this.fish.splice(index, 1);
+            }
+        });
+        //AIR
+        this.air.forEach((a, index) => {
+            if (this.diver.checkCollisions(a)) {
+            this.winRemainingAir()
+            this.air.splice(index, 1);
+                if (this.remainingAir < 0) {
                     this.isGameOver = true;
-                    this.onGameOver();
+                    this.onGameOver(); //no salta a la pantalla de gameOver
                 }
             }
         });
@@ -104,15 +165,26 @@ class Game {
         this.diver = new Diver(this.canvas, 1);
 
         const loop = () => {
-             
+        
             if (Math.random() > 0.97) { 
                 const y = Math.random() * this.canvas.height;
                 this.sharks.push(new Sharks(this.canvas, y));
             }
 
-            if (Math.random() > 0.995 && this.points >= 150 && this.treasure == 0) { 
+            if (Math.random() > 0.993 && this.points >= 150 && this.treasure == 0) { 
                 const y = Math.random() * this.canvas.height;
                 this.treasure.push(new Treasure(this.canvas, y));
+            }
+
+            if (Math.random() > 0.99) { 
+                const y = Math.random() * this.canvas.height;
+                this.fish.push(new Fish(this.canvas, y));
+            }
+
+            if (Math.random() > 0.99 && this.air == 0) { 
+                const x = Math.random() * this.canvas.width;
+                const y = Math.random() * this.canvas.height;
+                this.air.push(new Air(this.canvas, x, y));
             }
 
             this.checkAllCollisions()

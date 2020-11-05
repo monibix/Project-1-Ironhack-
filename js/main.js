@@ -21,7 +21,7 @@ const main = () => {
                     <li>Get an extra live if you find a treasure</li>
                 </ul>
                 <button>Play Game</button>
-            </header>
+            <header>
         `)
         const startButton = document.querySelector('button');
         startButton.addEventListener('click', buildGameScreen)
@@ -62,6 +62,7 @@ const main = () => {
 
         canvasElement.setAttribute("width", width);
         canvasElement.setAttribute("height", height);
+        console.log(canvasElement)
 
         const game = new Game(canvasElement)
         game.gameOverCallback(buildGameOver);
@@ -132,3 +133,4 @@ window.addEventListener("load", main);
 
 
 
+//        
