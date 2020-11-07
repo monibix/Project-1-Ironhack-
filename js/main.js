@@ -23,32 +23,29 @@ const main = () => {
                 <button>Play Game</button>
             <header>
         `)
+
+        const previousName = document.querySelector('input')
+        
         const startButton = document.querySelector('button');
-        startButton.addEventListener('click', buildGameScreen)
+        startButton.addEventListener('click', () => {
+            const name = previousName.value
+            console.log(name)
+
+            buildGameScreen(name)
+            });
         //Añadido evento para iniciar juego presionando cualquier tecla 'Enter' o 'q'
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
             if (event.key === 'Enter' || event.key === 'q') {
-                buildGameScreen()
+                
+                const name = previousName.value
+                console.log(name)
+                buildGameScreen(name)
             }
         });
     }
 
-    //DESCOMENTAR PARA PROBAR
-    //pq no se ejecuta la función removeHeader() en el evento click de playGame???
-    // const header = document.querySelector('header')
-    // const body = document.querySelector('body')
-    // const removeHeader = () => {
-    //         body.removeChild(header)
-    //     }
-    // const startGame = () => {
-    // const playGame = document.querySelector('button');
-    // playGame.addEventListener('click', buildGameScreen, removeHeader );
-    // console.log(body)
-    // };
-    //FIN DESCOMENTAR PARA
-
-    const buildGameScreen = () => { 
+    const buildGameScreen = (name) => { 
         builDom(`
             <section class="game-screen">
                 <canvas></canvas> 
@@ -64,10 +61,9 @@ const main = () => {
         canvasElement.setAttribute("height", height);
         console.log(canvasElement)
 
-        const game = new Game(canvasElement)
+        const game = new Game(canvasElement, name)
         game.gameOverCallback(buildGameOver);
 
-        //game.score()
         game.startLoop();
 
         //Events to move the diver
@@ -100,25 +96,57 @@ const main = () => {
 
     };
 
-    const buildGameOver = () => { //returns undefined this.game.points
-        builDom(`
+
+    const setScores = (name, score) => {
+        //recoge scores 
+        const scoresStr = localStorage.getItem('topScores')
+        let scoresArr = [];
+        if (scoresStr) {
+            scoresArr = JSON.parse(scoresStr)
+        }
+
+        //convertir a objeto
+        // scoresArr = JSON.parse(scoresStr)
+        //actualizar arr scores
+        const newScoreObj = {name: name , score: score} 
+        scoresArr.push(newScoreObj)
+        //convertir de nuevo a string
+        localStorage.setItem('topScores', JSON.stringify(scoresArr))
+        return scoresArr
+    }
+
+
+
+    const buildGameOver = (name, scores) => { //returns undefined this.game.points  //${setScores(name, score)}
+    const score = setScores(name,scores)
+    let scoreLi = ""
+    score.forEach((scoreObj)=>{
+        let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
+        //const gameOver = document.querySelector('ol')
+        //gameOver.appendChild('newLi')
+        scoreLi+=newLi
+    } )    
+    builDom(`
             <section class="game-over">
                 <h1>Game Over</h1>
-                <h3>Your Score is ${this.points}</h3> 
+                <h3>${name} i Your Score is ${scores}</h3> 
                 <h4>Best restults</h4>
                 <ol>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li></li>
-                <ol>
+                    ${scoreLi}
+                </ol>
                 <button>Play Again</button>
             </section>
             `);
     
         const restartButton = document.querySelector("button");
-        restartButton.addEventListener("click", buildGameScreen);
+        restartButton.addEventListener("click", buildSplashScreen); 
+        const body = document.querySelector('body')
+        body.addEventListener("keydown", event => {
+            if (event.key === 'Enter' || event.key === 'r') {
+                buildSplashScreen()
+            }
+        });
+
     };
     
     buildSplashScreen();
@@ -128,9 +156,3 @@ window.addEventListener("load", main);
 
 
 
-
-
-
-
-
-//        

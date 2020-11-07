@@ -2,7 +2,8 @@
 console.log('Game file')
 
 class Game {
-    constructor(canvas) {
+    constructor(canvas, name) {
+        this.name = name;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
         this.x = 0; //para el background en movimiento
@@ -15,7 +16,7 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 60;
+        this.remainingAir = 5;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
@@ -117,6 +118,7 @@ class Game {
     checkRemainingAir() {
         if (this.remainingAir === 0) {
             this.isGameOver = true;
+            this.onGameOver(this.name, this.points);
         }
     }
 
@@ -137,7 +139,7 @@ class Game {
             this.sharks.splice(index, 1);
                 if (this.diver.lives === 0) {
                     this.isGameOver = true;
-                    this.onGameOver();
+                    this.onGameOver(this.name, this.points);
                 }
             }
         });
@@ -160,14 +162,10 @@ class Game {
             if (this.diver.checkCollisions(a)) {
             this.winRemainingAir()
             this.air.splice(index, 1);
-                if (this.remainingAir <= 1) {
-                    this.isGameOver = true;
-                    this.onGameOver(); //no salta a la pantalla de gameOver
-                }
+                
             }
         });
     }
-    
     
     startLoop() {
         this.diver = new Diver(this.canvas, 1);
@@ -201,6 +199,7 @@ class Game {
                 this.ctx.fillText(`Air: ${this.remainingAir}`, 150 , 150)
             }
 
+            this.checkRemainingAir()
             this.checkAllCollisions()
             this.updateCanvas()
             this.clearCanvas()

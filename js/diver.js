@@ -42,9 +42,16 @@ class Diver {
         if (this.y <= 0) {
             this.direction = 0
             this.y = 1
-        } else if (this.y >= this.canvas.height - this.height) {
+        } else if (this.y >= this.canvas.height - this.size) {
             this.direction = 0
-            this.y = this.canvas.height - this.height -1
+            this.y = this.canvas.height-this.size
+        }
+        if (this.x <= 0) {
+            this.direction = 0
+            this.x = 1
+        } else if (this.x >= this.canvas.width - this.size) {
+            this.direction = 0
+            this.x = this.canvas.width-this.size
         }
     }
 
