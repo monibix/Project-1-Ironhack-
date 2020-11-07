@@ -8,14 +8,13 @@ class Air {
         //this.width = 60;
         //this.height = 30;
         this.x = x; 
-        this.y = y;
+        this.y = 0;
         this.speed = 5; 
-        this.direction = -1; 
+        this.direction = 1; 
         }
 
         update() { 
-            this.x = this.x 
-            this.y = this.y
+            this.y = this.y + this.direction * this.speed; 
         }
 
         draw() { 

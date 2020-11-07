@@ -7,12 +7,12 @@ class Diver {
         this.ctx = canvas.getContext("2d");
         //this.width = 180; 
         //this.height = 100; 
-        this.size = 80;
+        this.size = 100;
         this.x = 10 + this.size / 2;; 
         this.y = this.canvas.height / 2; 
         this.directionY = 0;
         this.directionX = 0;
-        this.speed = 5 ; 
+        this.speed = 8 ; 
         this.lives = lives;
     }
     

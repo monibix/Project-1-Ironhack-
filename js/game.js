@@ -5,6 +5,8 @@ class Game {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
+        this.x = 0; //para el background en movimiento
+        this.speed = -1; // para el background en movimiento
         this.diver; 
         this.sharks = [];
         this.treasure = [];
@@ -13,7 +15,7 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 60
+        this.remainingAir = 10;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
@@ -22,6 +24,7 @@ class Game {
     }
 
     updateCanvas() {
+        this.moveBackground()
         this.checkRemainingAir()
         this.diver.updateY()
         this.diver.updateX()
@@ -66,8 +69,6 @@ class Game {
     }
 
     drawScore() {
-        // this.points = parseInt(this.points+=1) 
-        // setInterval(() => {((this.points), 3000)});
         this.ctx.font = "bold 18px arial"
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(`Score: ${this.points}`, this.canvas.width - 250, 40)
@@ -77,7 +78,17 @@ class Game {
         let imgBack = new Image() 
         imgBack.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/background.jpg'
         this.ctx.drawImage(imgBack, 0, 0)
+            if (this.speed < 0) {
+                this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0);
+            } else {
+                this.ctx.drawImage(imgBack, this.x - imgBack.width, 0);
+            }
     }
+    moveBackground() {
+        this.x += this.speed;
+        this.x %= this.canvas.width;
+    }
+
 
     drawLives(){
         let imgLives = new Image() 
@@ -89,11 +100,14 @@ class Game {
     }
 
     drawRemainingAir() {
-        //this.remainingAir = parseInt(this.remainingAir - 1) 
-        //setInterval(() => (this.remainingAir), 1000)
         this.ctx.font = "bold 18px arial"
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(`Air: ${this.remainingAir}`, this.canvas.width - 350, 40)
+        if (this.remainingAir < 10) {
+            this.ctx.font = "bold 90px arial"
+            this.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            this.ctx.fillText(`Air: ${this.remainingAir}`, 600, this.canvas.height/2)
+        }
     }
 
     winRemainingAir() {
@@ -106,10 +120,6 @@ class Game {
         }
     }
 
-    // stopGame() {
-    //     this.sharks.speed = 0; //Este creo que puede ir fuera
-    // }
-
     winScore(num) {
         this.points += num
     }
@@ -120,13 +130,11 @@ class Game {
 
     checkAllCollisions() {
         this.diver.checkScreen();
-        //this.stopGame();
         //SHARKS
         this.sharks.forEach((shark, index) => {
             if (this.diver.checkCollisions(shark)) {
             this.diver.loseLive();
             this.sharks.splice(index, 1);
-            //this.stopGame() //esto creo que puede ir fuera
                 if (this.diver.lives === 0) {
                     this.isGameOver = true;
                     this.onGameOver();
@@ -152,7 +160,7 @@ class Game {
             if (this.diver.checkCollisions(a)) {
             this.winRemainingAir()
             this.air.splice(index, 1);
-                if (this.remainingAir < 0) {
+                if (this.remainingAir <= 1) {
                     this.isGameOver = true;
                     this.onGameOver(); //no salta a la pantalla de gameOver
                 }
@@ -162,6 +170,7 @@ class Game {
     
     
     startLoop() {
+        debugger;
         this.diver = new Diver(this.canvas, 1);
 
         const loop = () => {
@@ -181,10 +190,16 @@ class Game {
                 this.fish.push(new Fish(this.canvas, y));
             }
 
-            if (Math.random() > 0.99 && this.air == 0) { 
+            if (Math.random() > 0.991 && this.air == 0) {  
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
                 this.air.push(new Air(this.canvas, x, y));
+            }
+
+            if (this.remainingAir < 50) {
+                this.ctx.font = "bold 48px arial"
+                this.ctx.fillStyle = 'black';
+                this.ctx.fillText(`Air: ${this.remainingAir}`, 150 , 150)
             }
 
             this.checkAllCollisions()

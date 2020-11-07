@@ -10,7 +10,7 @@ const main = () => {
     const buildSplashScreen = () => { 
         builDom(`
             <header class="container">
-            <h1>SHARKS</h1>
+            <h1>SCUBASHARK</h1>
                 <input type="text" placeholder="Enter your nickname">
                 <h3>Instructions</h3>
                 <ul>
