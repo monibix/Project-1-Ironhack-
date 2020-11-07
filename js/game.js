@@ -76,7 +76,7 @@ class Game {
 
     drawBackground() {
         let imgBack = new Image() 
-        imgBack.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/background.jpg'
+        imgBack.src = './images/background.jpg'
         this.ctx.drawImage(imgBack, 0, 0)
             if (this.speed < 0) {
                 this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0);
@@ -170,7 +170,6 @@ class Game {
     
     
     startLoop() {
-        debugger;
         this.diver = new Diver(this.canvas, 1);
 
         const loop = () => {

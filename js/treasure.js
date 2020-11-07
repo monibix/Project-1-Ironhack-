@@ -19,7 +19,7 @@ class Treasure {
 
         draw() { 
             let imgTreasure = new Image()
-            imgTreasure.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/treasure.png'
+            imgTreasure.src = './images/treasure.png'
             this.ctx.drawImage(imgTreasure, this.x, this.y, this.size, this.size)
         }
 
