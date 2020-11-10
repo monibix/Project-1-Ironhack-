@@ -94,49 +94,37 @@ const main = () => {
     };
 
 
-    // const setScores = (name, score) => {
-
-
-    //     const scoresStr = localStorage.getItem('topScores')
-    //     let scoresArr = [];
-    //     if (scoresStr) {
-    //         scoresArr = JSON.parse(scoresStr)
-    //     }
-    //     const newScoreObj = {name: name.toUpperCase() , score: score} 
-
-    //     if (scoresArr.length >=6) {
-    //         scoresArr.push(newScoreObj) 
-    //     } else {
-    //         localStorage.clear()
-    //     }
-
-    //     console.log("ARRAY LENGTH",scoresArr.length)
-
-    //     localStorage.setItem('topScores', JSON.stringify(scoresArr))
-
-
-    //     return scoresArr
-    // }
+    const setScores = (name, score) => {
+        const scoresStr = localStorage.getItem('topScores')
+        let scoresArr = [];
+        if (scoresStr) {
+            scoresArr = JSON.parse(scoresStr)
+        }
+        const newScoreObj = {name: name.toUpperCase() , score: score} 
+        scoresArr.push(newScoreObj)
+        let sortedArr = scoresArr.sort((a, b) => b.score-a.score).slice(0,4)
+        console.log("SORT arr",sortedArr)
+        localStorage.setItem('topScores', JSON.stringify(sortedArr))
+        return sortedArr
+    }
     
-
-
-
 
     const buildGameOver = (name, scores) => { 
-    // let scoreLi = ""
-    // score.forEach((scoreObj)=>{
-    //     let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
-    //     scoreLi+=newLi
-    // } )
-    
+    let score = setScores(name,scores)
+    let scoreLi = ""
+    score.forEach((scoreObj)=>{
+        let newLi = `<li>${scoreObj.name.toUpperCase()} ${scoreObj.score}</li><br>`
+
+        scoreLi+=newLi
+    } )
     
     builDom(`
             <section class="game-over">
                 <h1>Game Over</h1>
-                <h3>Well done ${name}, your get ${scores} points!</h3> 
+                <h3>Well done ${name}, your score is: ${scores}</h3> 
                 <h4>Best results</h4>
                 <ol>
-                    ${name}: ${scores}
+                    ${scoreLi}
                 </ol>
                 <button>Play Again</button>
             </section>

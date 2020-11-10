@@ -21,6 +21,7 @@ class Game {
             this.remainingAir -= 1
         }, 1000);
         this.isGameOver = false;
+        //this.crashSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/344271__inspectorj__glass-smash-bottle-f.wav') //intentando poner sonido. 
     }
 
     updateCanvas() {
@@ -92,7 +93,7 @@ class Game {
 
     drawLives(){
         let imgLives = new Image() 
-        imgLives.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/cor.png'
+        imgLives.src = './images/cor.png'
         this.ctx.drawImage(imgLives, this.canvas.width - 100, 25, 20, 20)
         this.ctx.font = "bold 18px arial"
         this.ctx.fillStyle = 'black';
@@ -117,7 +118,9 @@ class Game {
     checkRemainingAir() {
         if (this.remainingAir === 0) {
             this.isGameOver = true;
+            console.log("gameover air", this.remainingAir)
             this.onGameOver(this.name, this.points);
+            clearInterval(this.tiempo)
         }
     }
 
@@ -136,9 +139,12 @@ class Game {
             if (this.diver.checkCollisions(shark)) {
             this.diver.loseLive();
             this.sharks.splice(index, 1);
+            //this.crashSound.play();
                 if (this.diver.lives === 0) {
+                    console.log("gameover remainingAir", this.remainingAir)
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
+                    clearInterval(this.tiempo)
                 }
             }
         });
@@ -161,7 +167,6 @@ class Game {
             if (this.diver.checkCollisions(a)) {
             this.winRemainingAir()
             this.air.splice(index, 1);
-                
             }
         });
     }
@@ -196,7 +201,6 @@ class Game {
                 this.air.push(new Air(this.canvas, x, y));
                 setTimeout(() => {
                     this.air=[]
-                    console.log("entimeout",this.air.length)
                 },3000)
             }
             //intentando aumentar frecuencia airs cuando quedan 10 segundos. 
@@ -208,29 +212,28 @@ class Game {
                     this.air.push(new Air(this.canvas, x, y));
                 }
             }
-
             //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
             if (this.points > 1000 && this.points < 2000) {
-                if (Math.random() > 0.97) {  
+                if (Math.random() > 0.975) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 2001 && this.points < 3000) {
-                if (Math.random() > 0.965) {  
+                if (Math.random() > 0.97) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 3001 && this.points < 5000) {
-                if (Math.random() > 0.95) {  
+                if (Math.random() > 0.965) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
 
             if (this.points > 5000) {
-                if (Math.random() > 0.945) { 
+                if (Math.random() > 0.96) { 
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
@@ -241,6 +244,9 @@ class Game {
             this.updateCanvas()
             this.clearCanvas()
             this.drawCanvas()
+
+            console.log("vidas", this.diver.lives)
+
             if (!this.isGameOver) {
                 window.requestAnimationFrame(loop)
             }
