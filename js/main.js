@@ -14,11 +14,11 @@ const main = () => {
                 <input type="text" placeholder="Enter your nickname">
                 <h3>Instructions</h3>
                 <ul>
-                    <li>Avoid be eaten by the sharks</li>
-                    <li>Move the player up and down</li>
-                    <li>Spend the maximum time possible on the water</li>
-                    <li>Get extra points by catching fishes</li>
-                    <li>Get an extra live if you find a treasure</li>
+                    <li>Move the diver with the arrows keys to avoid the sharks</li>
+                    <li>If you crash with a shark, you lose a live</li>
+                    <li>Get an extra live if you get a treasure</li>
+                    <li>Get 100 extra points if you get a fish</li>
+                    <li>Don't forget to get the air, otherwise you will die drowned</li>
                 </ul>
                 <button>Play Game</button>
             <header>
@@ -29,8 +29,7 @@ const main = () => {
         const startButton = document.querySelector('button');
         startButton.addEventListener('click', () => {
             const name = previousName.value
-            console.log(name)
-
+            console.log("USERNAME",name)
             buildGameScreen(name)
             });
         //Añadido evento para iniciar juego presionando cualquier tecla 'Enter' o 'q'
@@ -39,7 +38,6 @@ const main = () => {
             if (event.key === 'Enter' || event.key === 'q') {
                 
                 const name = previousName.value
-                console.log(name)
                 buildGameScreen(name)
             }
         });
@@ -59,7 +57,6 @@ const main = () => {
 
         canvasElement.setAttribute("width", width);
         canvasElement.setAttribute("height", height);
-        console.log(canvasElement)
 
         const game = new Game(canvasElement, name)
         game.gameOverCallback(buildGameOver);
@@ -97,42 +94,49 @@ const main = () => {
     };
 
 
-    const setScores = (name, score) => {
-        //recoge scores 
-        const scoresStr = localStorage.getItem('topScores')
-        let scoresArr = [];
-        if (scoresStr) {
-            scoresArr = JSON.parse(scoresStr)
-        }
-
-        //convertir a objeto
-        // scoresArr = JSON.parse(scoresStr)
-        //actualizar arr scores
-        const newScoreObj = {name: name , score: score} 
-        scoresArr.push(newScoreObj)
-        //convertir de nuevo a string
-        localStorage.setItem('topScores', JSON.stringify(scoresArr))
-        return scoresArr
-    }
+    // const setScores = (name, score) => {
 
 
+    //     const scoresStr = localStorage.getItem('topScores')
+    //     let scoresArr = [];
+    //     if (scoresStr) {
+    //         scoresArr = JSON.parse(scoresStr)
+    //     }
+    //     const newScoreObj = {name: name.toUpperCase() , score: score} 
 
-    const buildGameOver = (name, scores) => { //returns undefined this.game.points  //${setScores(name, score)}
-    const score = setScores(name,scores)
-    let scoreLi = ""
-    score.forEach((scoreObj)=>{
-        let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
-        //const gameOver = document.querySelector('ol')
-        //gameOver.appendChild('newLi')
-        scoreLi+=newLi
-    } )    
+    //     if (scoresArr.length >=6) {
+    //         scoresArr.push(newScoreObj) 
+    //     } else {
+    //         localStorage.clear()
+    //     }
+
+    //     console.log("ARRAY LENGTH",scoresArr.length)
+
+    //     localStorage.setItem('topScores', JSON.stringify(scoresArr))
+
+
+    //     return scoresArr
+    // }
+    
+
+
+
+
+    const buildGameOver = (name, scores) => { 
+    // let scoreLi = ""
+    // score.forEach((scoreObj)=>{
+    //     let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
+    //     scoreLi+=newLi
+    // } )
+    
+    
     builDom(`
             <section class="game-over">
                 <h1>Game Over</h1>
-                <h3>${name} i Your Score is ${scores}</h3> 
-                <h4>Best restults</h4>
+                <h3>Well done ${name}, your get ${scores} points!</h3> 
+                <h4>Best results</h4>
                 <ol>
-                    ${scoreLi}
+                    ${name}: ${scores}
                 </ol>
                 <button>Play Again</button>
             </section>
@@ -142,7 +146,7 @@ const main = () => {
         restartButton.addEventListener("click", buildSplashScreen); 
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
-            if (event.key === 'Enter' || event.key === 'r') {
+            if (event.key === 'Enter') {
                 buildSplashScreen()
             }
         });

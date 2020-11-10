@@ -1,7 +1,7 @@
 "use strict" 
 
 class Air {
-    constructor(canvas, x, y) { 
+    constructor(canvas, x, y) { //refactorizar, sólo se mueve en eje y
         this.size = 40;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");

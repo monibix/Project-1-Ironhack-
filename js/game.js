@@ -16,12 +16,11 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 5;
+        this.remainingAir = 60;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
         this.isGameOver = false;
-        console.log(this.points)
     }
 
     updateCanvas() {
@@ -127,7 +126,7 @@ class Game {
     }
 
     gameOverCallback(callback) {
-        this.onGameOver = callback;
+        this.onGameOver = callback;       
     }
 
     checkAllCollisions() {
@@ -172,31 +171,69 @@ class Game {
 
         const loop = () => {
         
-            if (Math.random() > 0.97) { 
+            if (Math.random() > 0.98) { 
                 const y = Math.random() * this.canvas.height;
                 this.sharks.push(new Sharks(this.canvas, y));
             }
 
             if (Math.random() > 0.993 && this.points >= 150 && this.treasure == 0) { 
                 const y = Math.random() * this.canvas.height;
-                this.treasure.push(new Treasure(this.canvas, y));
+                const x = Math.random() * this.canvas.width;
+                this.treasure.push(new Treasure(this.canvas, x, y));
+
+                    //Añadir condicion si treasure esta en pantalla más de 15 segundos, desaparecer
             }
 
-            if (Math.random() > 0.99) { 
+            if (Math.random() > 0.98) { 
                 const y = Math.random() * this.canvas.height;
                 this.fish.push(new Fish(this.canvas, y));
             }
 
-            if (Math.random() > 0.991 && this.air == 0) {  
+            if (Math.random() > 0.992 && this.air.length == 0) {  
+                console.log("aires normales", this.air.length)
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
                 this.air.push(new Air(this.canvas, x, y));
+                setTimeout(() => {
+                    this.air=[]
+                    console.log("entimeout",this.air.length)
+                },3000)
+            }
+            //intentando aumentar frecuencia airs cuando quedan 10 segundos. 
+            if (this.remainingAir < 10 && this.air.length == 0) { 
+                if (Math.random() > 0.90) {  
+                    console.log("aumentando frecuencia aires")
+                    const x = Math.random() * this.canvas.width;
+                    const y = Math.random() * this.canvas.height;
+                    this.air.push(new Air(this.canvas, x, y));
+                }
             }
 
-            if (this.remainingAir < 50) {
-                this.ctx.font = "bold 48px arial"
-                this.ctx.fillStyle = 'black';
-                this.ctx.fillText(`Air: ${this.remainingAir}`, 150 , 150)
+            //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
+            if (this.points > 1000 && this.points < 2000) {
+                if (Math.random() > 0.97) {  
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
+            }
+            if (this.points > 2001 && this.points < 3000) {
+                if (Math.random() > 0.965) {  
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
+            }
+            if (this.points > 3001 && this.points < 5000) {
+                if (Math.random() > 0.95) {  
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
+            }
+
+            if (this.points > 5000) {
+                if (Math.random() > 0.945) { 
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
             }
 
             this.checkRemainingAir()
