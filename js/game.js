@@ -16,13 +16,17 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 10;
+        this.remainingAir = 30;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
         this.isGameOver = false;
         this.crashSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/shark.mp3') //intentando poner sonido. 
         this.pointsSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/points.wav')
+        this.treasureSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/treasure.mp3')
+        this.airSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/air.wav')
+        this.gameOverSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/gameover.wav')
+        this.backgroundSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/backgroundSound.m4a')
     }
 
     updateCanvas() {
@@ -78,13 +82,15 @@ class Game {
 
     drawBackground() {
         let imgBack = new Image() 
-        imgBack.src = './images/background.jpg'
-        this.ctx.drawImage(imgBack, 0, 0)
+        imgBack.src = "/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/background2.jpg"
+        this.ctx.drawImage(imgBack, 0, 0, this.canvas.width, this.canvas.height)
             if (this.speed < 0) {
-                this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0);
+                this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
             } else {
-                this.ctx.drawImage(imgBack, this.x - imgBack.width, 0);
+                this.ctx.drawImage(imgBack, this.x - imgBack.width, 0, this.canvas.width, this.canvas.height);
             }
+        this.backgroundSound.play();
+        this.backgroundSound.volume = 0.1;
     }
     moveBackground() {
         this.x += this.speed;
@@ -114,6 +120,8 @@ class Game {
 
     winRemainingAir() {
         this.remainingAir += 30
+        this.backgroundSound.pause()
+
     }
 
     checkRemainingAir() {
@@ -124,6 +132,9 @@ class Game {
             console.log("Ejecución gameOver desde REMAININGAIR. Points =", this.points)
             this.onGameOver(this.name, this.points);
             clearInterval(this.tiempo)
+            this.gameOverSound.play();
+            this.gameOverSound.volume = 0.1;
+            this.backgroundSound.pause()
         }
     }
 
@@ -143,7 +154,7 @@ class Game {
             this.diver.loseLive();
             this.sharks.splice(index, 1);
             this.crashSound.play();
-            this.crashSound.volume = 0.1
+            this.crashSound.volume = 0.2
                 if (this.diver.lives === 0) {
                     console.log("Ejecución gameOver desde SHARKS. RemainingAir=", this.remainingAir)
                     console.log("Ejecución gameOver desde SHARKS. Lives=", this.diver.lives)
@@ -151,6 +162,9 @@ class Game {
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
                     clearInterval(this.tiempo)
+                    console.log("audio", this.backgroundSound)
+                    this.gameOverSound.play();
+                    this.gameOverSound.volume = 0.1;
                 }
             }
         });
@@ -159,6 +173,8 @@ class Game {
             if (this.diver.checkCollisions(treasure)) {
             this.diver.winLive();
             this.treasure.splice(index, 1);
+            this.treasureSound.play();
+            this.treasureSound.volume = 0.2;
             }
         });
         //FISHES
@@ -167,7 +183,7 @@ class Game {
             this.winScore(100)
             this.fish.splice(index, 1);
             this.pointsSound.play();
-            this.pointsSound.volume = 0.1;
+            this.pointsSound.volume = 0.3;
             }
         });
         //AIR
@@ -175,6 +191,8 @@ class Game {
             if (this.diver.checkCollisions(a)) {
             this.winRemainingAir()
             this.air.splice(index, 1);
+            this.airSound.play();
+            this.airSound.volume = 0.2
             }
         });
     }
@@ -184,7 +202,7 @@ class Game {
 
         const loop = () => {
         
-            if (Math.random() > 0.98) { 
+            if (Math.random() > 0.985) { 
                 const y = Math.random() * this.canvas.height;
                 this.sharks.push(new Sharks(this.canvas, y));
             }
@@ -222,19 +240,19 @@ class Game {
             // }
             //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
             if (this.points > 1000 && this.points < 2000) {
-                if (Math.random() > 0.975) {  
+                if (Math.random() > 0.98) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 2001 && this.points < 3000) {
-                if (Math.random() > 0.97) {  
+                if (Math.random() > 0.975) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 3001 && this.points < 5000) {
-                if (Math.random() > 0.965) {  
+                if (Math.random() > 0.97) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
@@ -252,8 +270,6 @@ class Game {
             this.updateCanvas()
             this.clearCanvas()
             this.drawCanvas()
-
-            //console.log("vidas", this.diver.lives)
 
             if (!this.isGameOver) {
                 window.requestAnimationFrame(loop)

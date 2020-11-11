@@ -18,7 +18,7 @@ class Diver {
     
     draw() {
         let imgDiver = new Image()
-        imgDiver.src = './images/diver2.jpg' 
+        imgDiver.src = "/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/diver3.png" 
         this.ctx.drawImage(imgDiver, this.x, this.y, this.size, this.size)
     }
 
