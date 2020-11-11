@@ -16,12 +16,13 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 60;
+        this.remainingAir = 10;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
         this.isGameOver = false;
-        //this.crashSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/344271__inspectorj__glass-smash-bottle-f.wav') //intentando poner sonido. 
+        this.crashSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/shark.mp3') //intentando poner sonido. 
+        this.pointsSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/points.wav')
     }
 
     updateCanvas() {
@@ -118,7 +119,9 @@ class Game {
     checkRemainingAir() {
         if (this.remainingAir === 0) {
             this.isGameOver = true;
-            console.log("gameover air", this.remainingAir)
+            console.log("Ejecución gameOver desde REMAININGAIR. remainingAir=", this.remainingAir)
+            console.log("Ejecución gameOver desde REMAININGAIR. Lives=", this.diver.lives)
+            console.log("Ejecución gameOver desde REMAININGAIR. Points =", this.points)
             this.onGameOver(this.name, this.points);
             clearInterval(this.tiempo)
         }
@@ -139,9 +142,12 @@ class Game {
             if (this.diver.checkCollisions(shark)) {
             this.diver.loseLive();
             this.sharks.splice(index, 1);
-            //this.crashSound.play();
+            this.crashSound.play();
+            this.crashSound.volume = 0.1
                 if (this.diver.lives === 0) {
-                    console.log("gameover remainingAir", this.remainingAir)
+                    console.log("Ejecución gameOver desde SHARKS. RemainingAir=", this.remainingAir)
+                    console.log("Ejecución gameOver desde SHARKS. Lives=", this.diver.lives)
+                    console.log("Ejecución gameOver desde SHARKS. Points =", this.points)
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
                     clearInterval(this.tiempo)
@@ -160,6 +166,8 @@ class Game {
             if (this.diver.checkCollisions(fi)) {
             this.winScore(100)
             this.fish.splice(index, 1);
+            this.pointsSound.play();
+            this.pointsSound.volume = 0.1;
             }
         });
         //AIR
@@ -195,7 +203,7 @@ class Game {
             }
 
             if (Math.random() > 0.992 && this.air.length == 0) {  
-                console.log("aires normales", this.air.length)
+                //console.log("aires normales", this.air.length)
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
                 this.air.push(new Air(this.canvas, x, y));
@@ -204,14 +212,14 @@ class Game {
                 },3000)
             }
             //intentando aumentar frecuencia airs cuando quedan 10 segundos. 
-            if (this.remainingAir < 10 && this.air.length == 0) { 
-                if (Math.random() > 0.90) {  
-                    console.log("aumentando frecuencia aires")
-                    const x = Math.random() * this.canvas.width;
-                    const y = Math.random() * this.canvas.height;
-                    this.air.push(new Air(this.canvas, x, y));
-                }
-            }
+            // if (this.remainingAir < 10 && this.air.length == 0) { 
+            //     if (Math.random() > 0.90) {  
+            //         console.log("aumentando frecuencia aires")
+            //         const x = Math.random() * this.canvas.width;
+            //         const y = Math.random() * this.canvas.height;
+            //         this.air.push(new Air(this.canvas, x, y));
+            //     }
+            // }
             //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
             if (this.points > 1000 && this.points < 2000) {
                 if (Math.random() > 0.975) {  
@@ -245,7 +253,7 @@ class Game {
             this.clearCanvas()
             this.drawCanvas()
 
-            console.log("vidas", this.diver.lives)
+            //console.log("vidas", this.diver.lives)
 
             if (!this.isGameOver) {
                 window.requestAnimationFrame(loop)

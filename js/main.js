@@ -29,15 +29,15 @@ const main = () => {
         const startButton = document.querySelector('button');
         startButton.addEventListener('click', () => {
             const name = previousName.value
-            console.log("USERNAME",name)
+            console.log("De P1 a P2 desde 'CLICK'. Username:",name)
             buildGameScreen(name)
             });
-        //Añadido evento para iniciar juego presionando cualquier tecla 'Enter' o 'q'
+        //Añadido evento para iniciar juego presionando tecla 'Space'
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
-            if (event.key === 'Enter' || event.key === 'q') {
-                
+            if (event.code === 'Space') {
                 const name = previousName.value
+                console.log("De P1 a P2 con 'SPACE': Username:",name)
                 buildGameScreen(name)
             }
         });
@@ -103,7 +103,7 @@ const main = () => {
         const newScoreObj = {name: name.toUpperCase() , score: score} 
         scoresArr.push(newScoreObj)
         let sortedArr = scoresArr.sort((a, b) => b.score-a.score).slice(0,4)
-        console.log("SORT arr",sortedArr)
+        console.log("Sorted Array de Scores:",sortedArr)
         localStorage.setItem('topScores', JSON.stringify(sortedArr))
         return sortedArr
     }
@@ -135,6 +135,7 @@ const main = () => {
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
             if (event.key === 'Enter') {
+                console.log("de P3 a P1 con 'ENTER'")
                 buildSplashScreen()
             }
         });
@@ -145,6 +146,5 @@ const main = () => {
 }
 
 window.addEventListener("load", main);
-
 
 
