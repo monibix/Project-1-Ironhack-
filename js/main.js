@@ -129,7 +129,7 @@ const main = () => {
     <article>
       <h3>Well done ${name}, your score: </h3> 
       <h1>${scores}</h1>
-      <h3>Best results</h3>
+      <h3>Best results:</h3>
       <ol>
           ${scoreLi}
       </ol>

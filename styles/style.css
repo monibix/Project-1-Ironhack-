@@ -16,7 +16,6 @@ body {
 }
 
 .container {
-    border: 1px solid red;
     align-items: center;
 }
 
@@ -52,12 +51,15 @@ h3{
 
 img {
     width: 50px;
+    padding-right: 25px;
+    padding-left: 15px;
 }
 
 li {
     list-style: none;
-    padding: 15px;
+    padding: 1px;
     padding-bottom: 20px;
+    padding-right: 55px;
 }
 
 button {
