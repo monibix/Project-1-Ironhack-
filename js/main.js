@@ -43,14 +43,14 @@ const main = () => {
             buildGameScreen(name)
             });
         //Añadido evento para iniciar juego presionando tecla 'Space'
-        // const body = document.querySelector('body')
-        // body.addEventListener("keydown", event => {
-        //     if (event.code === 'Space') {
-        //         const name = previousName.value
-        //         console.log("De P1 a P2 con 'SPACE': Username:",name)
-        //         buildGameScreen(name)
-        //     }
-        // });
+        const body = document.querySelector('body')
+        body.addEventListener("keydown", event => {
+            if (event.code === 'Space') {
+                const name = previousName.value
+                console.log("De P1 a P2 con 'SPACE': Username:",name)
+                buildGameScreen(name)
+            }
+        });
     }
 
     const buildGameScreen = (name) => { 
@@ -149,13 +149,13 @@ const main = () => {
     
         const restartButton = document.querySelector("button");
         restartButton.addEventListener("click", buildSplashScreen); 
-        // const body = document.querySelector('body')
-        // body.addEventListener("keydown", event => {
-        //     if (event.key === 'Enter') {
-        //         console.log("de P3 a P1 con 'ENTER'")
-        //         buildSplashScreen()
-        //     }
-        // });
+        const body = document.querySelector('body')
+        body.addEventListener("keydown", event => {
+            if (event.key === 'Enter') {
+                console.log("de P3 a P1 con 'ENTER'")
+                buildSplashScreen()
+            }
+        });
     };
     
     buildSplashScreen();

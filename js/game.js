@@ -16,7 +16,7 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 10;
+        this.remainingAir = 30;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);

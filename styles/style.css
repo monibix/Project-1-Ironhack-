@@ -5,7 +5,7 @@
 }
 /*START GAME*/
 body {
-    background-image: url("/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/background2.jpg");
+    background-image: url("./images/background2.jpg");
     background-repeat: no-repeat;
     /*background-position: unset;*/
     font-size: 16px;
