@@ -101,6 +101,11 @@ button {
     width: 100px;
 }
 
+.game-over h4 {
+    padding: 20px;
+    font-size: 1.2em;
+}
+
 .game-over ol {
     padding-top: 3px;
 }

@@ -14,7 +14,7 @@ class Game {
         this.fish = [];
         this.points = 0;
         this.air = [];
-        this.remainingAir = 20;
+        this.remainingAir = 30;
         this.tiempo = 0 //declarado para hacer setInterval en startLoop()
         this.isGameOver = false;
         this.crashSound = new Audio ('./audio/shark.mp3') 
@@ -217,7 +217,7 @@ class Game {
                 this.sharks.push(new Sharks(this.canvas, y));
             }
 
-            if (Math.random() > 0.993 && this.treasure.length == 0) { 
+            if (Math.random() > 0.994 && this.treasure.length == 0) { 
                 const y = Math.random() * this.canvas.height;
                 const x = Math.random() * this.canvas.width;
                 this.treasure.push(new Treasure(this.canvas, x, y));
