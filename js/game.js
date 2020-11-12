@@ -16,7 +16,7 @@ class Game {
             this.points += 1
         }, 100);
         this.air = [];
-        this.remainingAir = 30;
+        this.remainingAir = 10;
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000);
@@ -31,7 +31,6 @@ class Game {
 
     updateCanvas() {
         this.moveBackground()
-        this.checkRemainingAir()
         this.diver.updateY()
         this.diver.updateX()
         this.sharks.forEach((shark) => {
@@ -82,7 +81,7 @@ class Game {
 
     drawBackground() {
         let imgBack = new Image() 
-        imgBack.src = "/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/background2.jpg"
+        imgBack.src = "./images/background2.jpg"
         this.ctx.drawImage(imgBack, 0, 0, this.canvas.width, this.canvas.height)
             if (this.speed < 0) {
                 this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
@@ -91,7 +90,11 @@ class Game {
             }
         this.backgroundSound.play();
         this.backgroundSound.volume = 0.1;
+        if (this.isGameOver === true) {
+            this.backgroundSound.pause()
+        }
     }
+
     moveBackground() {
         this.x += this.speed;
         this.x %= this.canvas.width;
@@ -162,9 +165,9 @@ class Game {
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
                     clearInterval(this.tiempo)
-                    console.log("audio", this.backgroundSound)
                     this.gameOverSound.play();
                     this.gameOverSound.volume = 0.1;
+                    this.backgroundSound.pause()
                 }
             }
         });
