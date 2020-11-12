@@ -9,13 +9,12 @@ const main = () => {
 
     const buildSplashScreen = () => { 
         builDom(`
-            <header class="play-game">
+            <section class="play-game">
                 <h1>SCUBASHARK</h1>
                 <input type="text" placeholder="Enter your name">
                     <article>
                         <h3>Instructions</h3>
                         <ul>
-        
                             <li><img src="./images/diver.png"></img>Move the diver with the arrows keys</li>
                             <div class="main-arrow-container">
                                 <div class="left-arrow-container">
@@ -31,7 +30,7 @@ const main = () => {
                         </ul>
                     </article>
                 <button>Play Game</button>
-            <header>
+            </section>
         `)
 
         const previousName = document.querySelector('input')
@@ -45,7 +44,7 @@ const main = () => {
         //Añadido evento para iniciar juego presionando tecla 'Space'
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
-            if (event.code === 'Space') {
+            if (event.keyCode == '32') {
                 const name = previousName.value
                 console.log("De P1 a P2 con 'SPACE': Username:",name)
                 buildGameScreen(name)
@@ -136,9 +135,9 @@ const main = () => {
         <img id="game-over-img" src="./images/gameover.png"></img>
         <h1>GAME OVER</h1>
             <article>
-                <h3>Well done ${name}, your score: </h3> 
+                <h3>Well done ${name}!  Your score: </h3> 
                 <h1>${scores}</h1>
-                <h3>Best results:</h3>
+                <h4>Best results:</h4>
                 <ol>
                     ${scoreLi}
                 </ol>

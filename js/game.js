@@ -12,14 +12,10 @@ class Game {
         this.sharks = [];
         this.treasure = [];
         this.fish = [];
-        this.points = setInterval(() => {
-            this.points += 1
-        }, 100);
+        this.points = 0;
         this.air = [];
-        this.remainingAir = 30;
-        this.tiempo = setInterval(() => {
-            this.remainingAir -= 1
-        }, 1000);
+        this.remainingAir = 20;
+        this.tiempo = 0 //declarado para hacer setInterval en startLoop()
         this.isGameOver = false;
         this.crashSound = new Audio ('./audio/shark.mp3') 
         this.pointsSound = new Audio ('./audio/points.wav')
@@ -30,7 +26,7 @@ class Game {
     }
 
     updateCanvas() {
-        this.moveBackground()
+        //this.moveBackground()
         this.diver.updateY()
         this.diver.updateX()
         this.sharks.forEach((shark) => {
@@ -81,12 +77,21 @@ class Game {
 
     drawBackground() {
         let imgBack = new Image() 
-        imgBack.src = "./images/background2.jpg"
+        imgBack.src = "./images/background4.jpg"
         this.ctx.drawImage(imgBack, 0, 0, this.canvas.width, this.canvas.height)
-            if (this.speed < 0) {
+        this.x += this.speed;
+        this.x %= this.canvas.width
+            if (this.speed < 0 ) {
                 this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
+                // console.log("if", this.x)
+                // console.log("width imagen",imgBack.width)
+                // console.log("height imagen", imgBack.height)
+                // console.log("canvas width", this.canvas.width)
+                // console.log("canvas height", this.canvas.height)
             } else {
-                this.ctx.drawImage(imgBack, this.x - imgBack.width, 0, this.canvas.width, this.canvas.height);
+                this.ctx.drawImage(imgBack, this.x - this.canvas.width, 0, this.canvas.width, this.canvas.height);
+                // console.log("else", this.x)
+                // console.log("width imagen",imgBack.width)
             }
         this.backgroundSound.play();
         this.backgroundSound.volume = 0.1;
@@ -94,12 +99,6 @@ class Game {
             this.backgroundSound.pause()
         }
     }
-
-    moveBackground() {
-        this.x += this.speed;
-        this.x %= this.canvas.width;
-    }
-
 
     drawLives(){
         let imgLives = new Image() 
@@ -135,9 +134,9 @@ class Game {
             console.log("Ejecución gameOver desde REMAININGAIR. Points =", this.points)
             this.onGameOver(this.name, this.points);
             clearInterval(this.tiempo)
+            clearInterval(this.points)
             this.gameOverSound.play();
             this.gameOverSound.volume = 0.1;
-            this.backgroundSound.pause()
         }
     }
 
@@ -165,9 +164,9 @@ class Game {
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
                     clearInterval(this.tiempo)
+                    clearInterval(this.points) 
                     this.gameOverSound.play();
                     this.gameOverSound.volume = 0.1;
-                    this.backgroundSound.pause()
                 }
             }
         });
@@ -203,6 +202,14 @@ class Game {
     startLoop() {
         this.diver = new Diver(this.canvas, 1);
 
+        //Interval que controla remainingAir cambiado a startLoop
+        this.tiempo = setInterval(() => {
+            this.remainingAir -= 1
+        }, 1000); 
+        this.points = setInterval(() => {
+            this.points += 1
+        }, 100);
+
         const loop = () => {
         
             if (Math.random() > 0.985) { 
@@ -214,8 +221,6 @@ class Game {
                 const y = Math.random() * this.canvas.height;
                 const x = Math.random() * this.canvas.width;
                 this.treasure.push(new Treasure(this.canvas, x, y));
-
-                    //Añadir condicion si treasure esta en pantalla más de 15 segundos, desaparecer
             }
 
             if (Math.random() > 0.98) { 
@@ -223,8 +228,8 @@ class Game {
                 this.fish.push(new Fish(this.canvas, y));
             }
 
-            if (Math.random() > 0.995 && this.air.length == 0) {  
-                //console.log("aires normales", this.air.length)
+            if (Math.random() > 0.996 && this.air.length == 0) {  
+                console.log("aires normales", this.air.length)
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
                 this.air.push(new Air(this.canvas, x, y));
@@ -232,15 +237,16 @@ class Game {
                     this.air=[]
                 },3000)
             }
-            //intentando aumentar frecuencia airs cuando quedan 10 segundos. 
-            // if (this.remainingAir < 10 && this.air.length == 0) { 
-            //     if (Math.random() > 0.90) {  
-            //         console.log("aumentando frecuencia aires")
-            //         const x = Math.random() * this.canvas.width;
-            //         const y = Math.random() * this.canvas.height;
-            //         this.air.push(new Air(this.canvas, x, y));
-            //     }
-            // }
+            //intentando aumentar frecuencia airs cuando quedan 10 segundos. Por qué sólo se ejecuta una vez??
+            if (this.remainingAir < 10 && this.air.length == 0) { 
+                if (Math.random() > 0.10) {  
+                    console.log("aumentando frecuencia aires")
+                    console.log("Length de array de aires", this.air.length)
+                    const x = Math.random() * this.canvas.width;
+                    const y = Math.random() * this.canvas.height;
+                    this.air.push(new Air(this.canvas, x, y));
+                }
+            }
             //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
             if (this.points > 1000 && this.points < 2000) {
                 if (Math.random() > 0.983) {  
@@ -261,8 +267,22 @@ class Game {
                 }
             }
 
-            if (this.points > 5000) {
+            if (this.points > 5001 && this.points < 7000) {
                 if (Math.random() > 0.973) { 
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
+            }
+
+            if (this.points > 7001 && this.points < 9000) {
+                if (Math.random() > 0.970) {  
+                    const y = Math.random() * this.canvas.height;
+                    this.sharks.push(new Sharks(this.canvas, y));
+                }
+            }
+
+            if (this.points > 9001) {
+                if (Math.random() > 0.965) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
