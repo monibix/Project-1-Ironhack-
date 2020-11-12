@@ -19,7 +19,7 @@ class Sharks {
   
     draw() { 
       let imgShark = new Image()
-        imgShark.src = './images/shark2.png' 
+        imgShark.src = './images/shark.png' 
         this.ctx.drawImage(imgShark, this.x, this.y, this.size, this.size)
     }
   

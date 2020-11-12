@@ -9,19 +9,27 @@ const main = () => {
 
     const buildSplashScreen = () => { 
         builDom(`
-            <header class="container">
-            <h1>SCUBASHARK</h1>
+            <header class="play-game">
+                <h1>SCUBASHARK</h1>
                 <input type="text" placeholder="Enter your name">
-                <article>
-                    <h3>Instructions</h3>
-                    <ul>
-                        <li><img src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/diver3.png"></img>Move the diver with the arrows keys</li>
-                        <li><img src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/shark2.png"></img>-1 live </li>
-                        <li><img src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/treasure.png"></img>+1 extra live</li>
-                        <li><img src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/fish2.png"></img>+100 extra points</li>
-                        <li><img src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/air2.png"></img>+30seconds extra air</li>
-                    </ul>
-                </article>
+                    <article>
+                        <h3>Instructions</h3>
+                        <ul>
+        
+                            <li><img src="./images/diver.png"></img>Move the diver with the arrows keys</li>
+                            <div class="main-arrow-container">
+                                <div class="left-arrow-container">
+                                    <li><img src="./images/shark.png">-1 live </li>
+                                    <li><img src="./images/treasure.png"></img>+1 extra live</li>
+                                    <li><img src="./images/fish.png"></img>+100 extra points</li>
+                                </div>    
+                                <div class="right-arrow-container">
+                                    <img id="arrow-keys" src="./images/arrowkeys.png">
+                                </div>
+                            </div>
+                            <li><img src="./images/air.png"></img>+30 seconds extra air</li>
+                        </ul>
+                    </article>
                 <button>Play Game</button>
             <header>
         `)
@@ -109,6 +117,7 @@ const main = () => {
         let sortedArr = scoresArr.sort((a, b) => b.score-a.score).slice(0,5)
         console.log("Sorted Array de Scores:",sortedArr)
         localStorage.setItem('topScores', JSON.stringify(sortedArr))
+        //localStorage.clear()
         return sortedArr
     }
     
@@ -124,18 +133,18 @@ const main = () => {
     
     builDom(`
     <section class="game-over">
-    <img id="game-over-img" src="/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/gameover.png"></img>
-    <h1>GAME OVER</h1>
-    <article>
-      <h3>Well done ${name}, your score: </h3> 
-      <h1>${scores}</h1>
-      <h3>Best results:</h3>
-      <ol>
-          ${scoreLi}
-      </ol>
-    </article>
-    <button id="play-again">Play Again</button>
-</section>
+        <img id="game-over-img" src="./images/gameover.png"></img>
+        <h1>GAME OVER</h1>
+            <article>
+                <h3>Well done ${name}, your score: </h3> 
+                <h1>${scores}</h1>
+                <h3>Best results:</h3>
+                <ol>
+                    ${scoreLi}
+                </ol>
+            </article>
+        <button>Play Again</button>
+    </section>
             `);
     
         const restartButton = document.querySelector("button");

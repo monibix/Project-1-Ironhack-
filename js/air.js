@@ -19,7 +19,7 @@ class Air {
 
         draw() { 
             let imgAir = new Image()
-            imgAir.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/air2.png'
+            imgAir.src = './images/air.png'
             this.ctx.drawImage(imgAir, this.x, this.y, this.size, this.size)
         }
 

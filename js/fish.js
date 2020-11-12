@@ -2,7 +2,7 @@
 
 class Fish {
     constructor(canvas, y) { 
-        this.size = 40;
+        this.size = 50;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
         //this.width = 60;
@@ -18,7 +18,7 @@ class Fish {
     }
     draw() { 
     let imgFish = new Image()
-        imgFish.src = '/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/fish2.png' 
+        imgFish.src = './images/fish.png' 
         this.ctx.drawImage(imgFish, this.x, this.y, this.size, this.size)
     }
 

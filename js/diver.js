@@ -12,13 +12,13 @@ class Diver {
         this.y = this.canvas.height / 2; 
         this.directionY = 0;
         this.directionX = 0;
-        this.speed = 8 ; 
+        this.speed = 10 ; 
         this.lives = lives;
     }
     
     draw() {
         let imgDiver = new Image()
-        imgDiver.src = "/PROJECTS/PROJECT 1/Project-1-Ironhack-/images/diver3.png" 
+        imgDiver.src = "./images/diver.png" 
         this.ctx.drawImage(imgDiver, this.x, this.y, this.size, this.size)
     }
 

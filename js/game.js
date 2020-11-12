@@ -21,12 +21,12 @@ class Game {
             this.remainingAir -= 1
         }, 1000);
         this.isGameOver = false;
-        this.crashSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/shark.mp3') //intentando poner sonido. 
-        this.pointsSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/points.wav')
-        this.treasureSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/treasure.mp3')
-        this.airSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/air.wav')
-        this.gameOverSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/gameover.wav')
-        this.backgroundSound = new Audio ('/PROJECTS/PROJECT 1/Project-1-Ironhack-/audio/backgroundSound.m4a')
+        this.crashSound = new Audio ('./audio/shark.mp3') 
+        this.pointsSound = new Audio ('./audio/points.wav')
+        this.treasureSound = new Audio ('./audio/treasure.mp3')
+        this.airSound = new Audio ('./audio/air.wav')
+        this.gameOverSound = new Audio ('./audio/gameover.wav')
+        this.backgroundSound = new Audio ('./audio/backgroundSound.m4a')
     }
 
     updateCanvas() {
@@ -207,7 +207,7 @@ class Game {
                 this.sharks.push(new Sharks(this.canvas, y));
             }
 
-            if (Math.random() > 0.993 && this.points >= 150 && this.treasure == 0) { 
+            if (Math.random() > 0.993 && this.treasure.length == 0) { 
                 const y = Math.random() * this.canvas.height;
                 const x = Math.random() * this.canvas.width;
                 this.treasure.push(new Treasure(this.canvas, x, y));
@@ -220,7 +220,7 @@ class Game {
                 this.fish.push(new Fish(this.canvas, y));
             }
 
-            if (Math.random() > 0.992 && this.air.length == 0) {  
+            if (Math.random() > 0.995 && this.air.length == 0) {  
                 //console.log("aires normales", this.air.length)
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
@@ -240,26 +240,26 @@ class Game {
             // }
             //CONTROL FRECUENCIA SHARKS SEGÚN PUNTOS
             if (this.points > 1000 && this.points < 2000) {
-                if (Math.random() > 0.98) {  
+                if (Math.random() > 0.983) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 2001 && this.points < 3000) {
-                if (Math.random() > 0.975) {  
+                if (Math.random() > 0.980) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
             if (this.points > 3001 && this.points < 5000) {
-                if (Math.random() > 0.97) {  
+                if (Math.random() > 0.977) {  
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
             }
 
             if (this.points > 5000) {
-                if (Math.random() > 0.96) { 
+                if (Math.random() > 0.973) { 
                     const y = Math.random() * this.canvas.height;
                     this.sharks.push(new Sharks(this.canvas, y));
                 }
