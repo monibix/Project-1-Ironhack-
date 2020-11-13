@@ -107,7 +107,7 @@ const main = () => {
         scoresArr.push(newScoreObj)
         let sortedArr = scoresArr.sort((a, b) => b.score-a.score).slice(0,5)
         localStorage.setItem('topScores', JSON.stringify(sortedArr))
-        localStorage.clear()
+        //localStorage.clear()
         return sortedArr
     }
     
