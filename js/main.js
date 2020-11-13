@@ -38,40 +38,34 @@ const main = () => {
         const startButton = document.querySelector('button');
         startButton.addEventListener('click', () => {
             const name = previousName.value
-            console.log("De P1 a P2 desde 'CLICK'. Username:",name)
             buildGameScreen(name)
             });
-        //Añadido evento para iniciar juego presionando tecla 'Space'
+        //Añadido evento para iniciar juego con tecla 'Space'
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
-            if (event.keyCode == '32') {
+            if (event.code == 'Space') {
                 const name = previousName.value
-                console.log("De P1 a P2 con 'SPACE': Username:",name)
                 buildGameScreen(name)
             }
         });
     }
 
     const buildGameScreen = (name) => { 
+        if(document.querySelector('.game-screen')) return
         builDom(`
             <section class="game-screen">
                 <canvas></canvas> 
             </section>
         `)
-
         const width = document.querySelector('.game-screen').offsetWidth;
         const height = document.querySelector('.game-screen').offsetHeight;
 
         const canvasElement = document.querySelector('canvas')
-
         canvasElement.setAttribute("width", width);
         canvasElement.setAttribute("height", height);
-        // console.log(canvasElement.width)
-        // console.log(canvasElement.height)
 
         const game = new Game(canvasElement, name)
         game.gameOverCallback(buildGameOver);
-
         game.startLoop();
 
         //Events to move the diver
@@ -101,9 +95,7 @@ const main = () => {
             }
         };
         document.addEventListener('keyup', stopDiver);
-
     };
-
 
     const setScores = (name, score) => {
         const scoresStr = localStorage.getItem('topScores')
@@ -114,44 +106,40 @@ const main = () => {
         const newScoreObj = {name: name.toUpperCase() , score: score} 
         scoresArr.push(newScoreObj)
         let sortedArr = scoresArr.sort((a, b) => b.score-a.score).slice(0,5)
-        console.log("Sorted Array de Scores:",sortedArr)
         localStorage.setItem('topScores', JSON.stringify(sortedArr))
-        //localStorage.clear()
+        localStorage.clear()
         return sortedArr
     }
     
-
     const buildGameOver = (name, scores) => { 
-    let score = setScores(name,scores)
-    let scoreLi = ""
-    score.forEach((scoreObj)=>{
-        let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
-
-        scoreLi+=newLi
-    } )
-    
-    builDom(`
-    <section class="game-over">
-        <img id="game-over-img" src="./images/gameover.png"></img>
-        <h1>GAME OVER</h1>
-            <article>
-                <h3>Well done ${name}!  Your score: </h3> 
-                <h1>${scores}</h1>
-                <h4>Best results:</h4>
-                <ol>
-                    ${scoreLi}
-                </ol>
-            </article>
-        <button>Play Again</button>
-    </section>
-            `);
+        let score = setScores(name,scores)
+        let scoreLi = ""
+        score.forEach((scoreObj)=>{
+            let newLi = `<li>${scoreObj.name} ${scoreObj.score}</li><br>`
+            scoreLi+=newLi
+        } )
+        
+        builDom(`
+        <section class="game-over">
+            <img id="game-over-img" src="./images/gameover.png"></img>
+            <h1>GAME OVER</h1>
+                <article>
+                    <h3>Well done ${name}!  Your score: </h3> 
+                    <h1>${scores}</h1>
+                    <h4>Best results:</h4>
+                    <ol>
+                        ${scoreLi}
+                    </ol>
+                </article>
+            <button>Play Again</button>
+        </section>
+        `);
     
         const restartButton = document.querySelector("button");
         restartButton.addEventListener("click", buildSplashScreen); 
         const body = document.querySelector('body')
         body.addEventListener("keydown", event => {
             if (event.key === 'Enter') {
-                console.log("de P3 a P1 con 'ENTER'")
                 buildSplashScreen()
             }
         });

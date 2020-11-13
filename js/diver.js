@@ -4,9 +4,7 @@ console.log("Diver's file")
 class Diver {
     constructor(canvas, lives) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext("2d");
-        //this.width = 180; 
-        //this.height = 100; 
+        this.ctx = canvas.getContext("2d"); 
         this.size = 100;
         this.x = 10 + this.size / 2;; 
         this.y = this.canvas.height / 2; 
@@ -74,7 +72,6 @@ class Diver {
     winLive() { 
         this.lives++;
     }
-
 
 }
 

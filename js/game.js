@@ -6,8 +6,8 @@ class Game {
         this.name = name;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
-        this.x = 0; //para el background en movimiento
-        this.speed = -1; // para el background en movimiento
+        this.x = 0;
+        this.speed = -1; 
         this.diver; 
         this.sharks = [];
         this.treasure = [];
@@ -15,7 +15,7 @@ class Game {
         this.points = 0;
         this.air = [];
         this.remainingAir = 30;
-        this.tiempo = 0 //declarado para hacer setInterval en startLoop()
+        this.tiempo = 0
         this.isGameOver = false;
         this.crashSound = new Audio ('./audio/shark.mp3') 
         this.pointsSound = new Audio ('./audio/points.wav')
@@ -26,7 +26,6 @@ class Game {
     }
 
     updateCanvas() {
-        //this.moveBackground()
         this.diver.updateY()
         this.diver.updateX()
         this.sharks.forEach((shark) => {
@@ -78,20 +77,13 @@ class Game {
     drawBackground() {
         let imgBack = new Image() 
         imgBack.src = "./images/background4.jpg"
-        this.ctx.drawImage(imgBack, 0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.drawImage(imgBack, this.x , 0, this.canvas.width, this.canvas.height)
         this.x += this.speed;
         this.x %= this.canvas.width
             if (this.speed < 0 ) {
                 this.ctx.drawImage(imgBack, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
-                // console.log("if", this.x)
-                // console.log("width imagen",imgBack.width)
-                // console.log("height imagen", imgBack.height)
-                // console.log("canvas width", this.canvas.width)
-                // console.log("canvas height", this.canvas.height)
             } else {
                 this.ctx.drawImage(imgBack, this.x - this.canvas.width, 0, this.canvas.width, this.canvas.height);
-                // console.log("else", this.x)
-                // console.log("width imagen",imgBack.width)
             }
         this.backgroundSound.play();
         this.backgroundSound.volume = 0.1;
@@ -123,15 +115,11 @@ class Game {
     winRemainingAir() {
         this.remainingAir += 30
         this.backgroundSound.pause()
-
     }
 
     checkRemainingAir() {
         if (this.remainingAir === 0) {
             this.isGameOver = true;
-            console.log("Ejecución gameOver desde REMAININGAIR. remainingAir=", this.remainingAir)
-            console.log("Ejecución gameOver desde REMAININGAIR. Lives=", this.diver.lives)
-            console.log("Ejecución gameOver desde REMAININGAIR. Points =", this.points)
             this.onGameOver(this.name, this.points);
             clearInterval(this.tiempo)
             clearInterval(this.points)
@@ -158,9 +146,6 @@ class Game {
             this.crashSound.play();
             this.crashSound.volume = 0.2
                 if (this.diver.lives === 0) {
-                    console.log("Ejecución gameOver desde SHARKS. RemainingAir=", this.remainingAir)
-                    console.log("Ejecución gameOver desde SHARKS. Lives=", this.diver.lives)
-                    console.log("Ejecución gameOver desde SHARKS. Points =", this.points)
                     this.isGameOver = true;
                     this.onGameOver(this.name, this.points);
                     clearInterval(this.tiempo)
@@ -202,7 +187,6 @@ class Game {
     startLoop() {
         this.diver = new Diver(this.canvas, 1);
 
-        //Interval que controla remainingAir cambiado a startLoop
         this.tiempo = setInterval(() => {
             this.remainingAir -= 1
         }, 1000); 
@@ -229,7 +213,6 @@ class Game {
             }
 
             if (Math.random() > 0.996 && this.air.length == 0) {  
-                console.log("aires normales", this.air.length)
                 const x = Math.random() * this.canvas.width;
                 const y = Math.random() * this.canvas.height;
                 this.air.push(new Air(this.canvas, x, y));
@@ -237,11 +220,9 @@ class Game {
                     this.air=[]
                 },3000)
             }
-            //intentando aumentar frecuencia airs cuando quedan 10 segundos. Por qué sólo se ejecuta una vez??
+            //AUMENTA FRECUENCIA AIRS
             if (this.remainingAir < 10 && this.air.length == 0) { 
                 if (Math.random() > 0.10) {  
-                    console.log("aumentando frecuencia aires")
-                    console.log("Length de array de aires", this.air.length)
                     const x = Math.random() * this.canvas.width;
                     const y = Math.random() * this.canvas.height;
                     this.air.push(new Air(this.canvas, x, y));

@@ -5,8 +5,6 @@ class Sharks {
       this.size = 90;
       this.canvas = canvas;
       this.ctx = this.canvas.getContext("2d");
-      //this.width = 60;
-      //this.height = 30;
       this.x = this.canvas.width; 
       this.y = y; 
       this.speed = 5; 

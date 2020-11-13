@@ -1,12 +1,10 @@
 "use strict" 
 
 class Air {
-    constructor(canvas, x, y) { //refactorizar, sólo se mueve en eje y
+    constructor(canvas, x, y) { 
         this.size = 40;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
-        //this.width = 60;
-        //this.height = 30;
         this.x = x; 
         this.y = 0;
         this.speed = 5; 
@@ -26,5 +24,4 @@ class Air {
         setDirection(direction) { 
             this.direction = direction;
         }
-
 }
